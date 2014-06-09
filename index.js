@@ -13,6 +13,8 @@ module.exports = function(code, fn) {
   return parse(code);
 };
 
+module.exports.hasDefine = hasDefine;
+
 function parse(code) {
   var ret = [];
   falafel(code, function(node) {
@@ -38,10 +40,13 @@ function replace(code, fn) {
 
 function update(node, args) {
   args = args.map(function(arg) {
+    if (arg === '') return '';
     if (isString(arg) && !isFunction(arg)) {
       return '"' + toString(arg) + '"';
     }
     return toString(arg);
+  }).filter(function(arg) {
+    return !!arg;
   });
   node.update('define(' + args + ');');
 }
@@ -57,6 +62,16 @@ function parseArgs(node) {
   });
 }
 
+function hasDefine(code) {
+  if (!code) return false;
+
+  if (Buffer.isBuffer(code)) {
+    code = code.toString();
+  }
+
+  return code.indexOf('define(') !== -1;
+}
+
 function toString(str) {
   if (str === null || str === undefined) {
     return '';
@@ -68,11 +83,7 @@ function toString(str) {
     }).join(', ') + ']';
   }
 
-  if (isObject(str)) {
-    return JSON.stringfy(str);
-  }
-
-  return (str.toString || Object.prototype.toString).call(str);
+  return str.toString();
 }
 
 function isDefine(node) {
@@ -90,8 +101,3 @@ function isFunction(str) {
 function isString(str) {
   return Object.prototype.toString.call(str) === '[object String]';
 }
-
-function isObject(str) {
-  return Object.prototype.toString.call(str) === '[object Object]';
-}
-

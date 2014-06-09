@@ -24,14 +24,14 @@ yeild
   {
     string: 'define(function(){})',
     args: [
-      [function]
+      'function(){}'
     ]
   },
   {
     string: 'define([\'./a\', \'./b\'], function(a, b){})',
     args: [
       ['./a', './b'],
-      [function]
+      'function(require){}'
     ]
   }
 ]
@@ -47,6 +47,12 @@ defines(code, function(args) {
     args.unshift('id');
   }
 });
+```
+
+detect if it contains `define`
+
+```
+defines.hasDefine(code);
 ```
 
 ## LISENCE

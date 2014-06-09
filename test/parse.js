@@ -1,6 +1,6 @@
 'use strict';
 
-var should = require('should');
+require('should');
 var fs = require('fs');
 var join = require('path').join;
 var defines = require('..');
@@ -10,7 +10,7 @@ var base = join(__dirname, 'fixtures');
 describe('defines parse', function() {
 
   it('should cmd', function() {
-    var code = fs.readFileSync(join(base, 'define-cmd.js'));
+    var code = fs.readFileSync(join(base, 'define-cmd.js')).toString();
     var actual = defines(code);
     actual.should.eql([{
       string: 'define(function(require, module, exports) {})',
