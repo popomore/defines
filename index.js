@@ -29,12 +29,14 @@ function parse(code) {
 }
 
 function replace(code, fn) {
+  var count = 0;
   return falafel(code, function(node) {
     if(!isDefine(node)) return;
 
     var args = parseArgs(node);
-    fn(args);
+    fn(args, count);
     update(node, args);
+    count++;
   }).toString();
 }
 

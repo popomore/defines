@@ -1,6 +1,6 @@
 # defines [![Build Status](https://travis-ci.org/popomore/defines.png?branch=master)](https://travis-ci.org/popomore/defines) [![Coverage Status](https://coveralls.io/repos/popomore/defines/badge.png?branch=master)](https://coveralls.io/r/popomore/defines?branch=master) 
 
-Lookup all define in js file.
+Lookup all define in js file and replace it.
 
 ---
 
@@ -12,12 +12,22 @@ $ npm install defines -g
 
 ## Usage
 
+Javascript file
+
+```
+define(function(){});
+
+define(['./a', './b'], function(a, b){});
+```
+
+Get defines with code below
+
 ```
 var defines = require('defines');
 defines(fs.readFileSync('a.js'));
 ```
 
-yeild
+yield
 
 ```
 [
@@ -28,30 +38,38 @@ yeild
     ]
   },
   {
-    string: 'define([\'./a\', \'./b\'], function(a, b){})',
+    string: 'define(["./a", "./b"], function(a, b){})',
     args: [
       ['./a', './b'],
-      'function(require){}'
+      'function(a, b){}'
     ]
   }
 ]
 ```
 
-replace
+Replace it with code below
 
 ```
 var code = fs.readFileSync('a.js');
-defines(code, function(args) {
-  if (args.length === 1) {
-    args.unshift('deps');
-    args.unshift('id');
+defines(code, function(args, index) {
+  if (index === 0) {
+    args.unshift('a');
   }
 });
 ```
 
-detect if it contains `define`
+yield
 
 ```
+define('a', function(){});
+
+define(['./a', './b'], function(a, b){});
+```
+
+Detect if it contains `define`
+
+```
+var code = fs.readFileSync('a.js');
 defines.hasDefine(code);
 ```
 
