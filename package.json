@@ -1,7 +1,7 @@
 {
   "name": "defines",
-  "version": "0.1.0-alpha",
-  "description": "The best module ever.",
+  "version": "0.1.0",
+  "description": "Lookup all define in js file and replace it.",
   "main": "index",
   "dependencies": {
     "falafel": "~0.3.1"
